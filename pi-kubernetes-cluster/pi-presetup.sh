@@ -2,7 +2,7 @@
 
 # Configuration variables
 nameserver="192.168.1.86" # I'm using PiHole as a DNS server. Feel free to use 8.8.8.8 Google or 1.1.1.1 Cloudflare
-default_gateway="192.168.1.1" # IP of your router
+default_gateway="192.168.1.1" # IP of your router.
 wifi_ssid="" # Your Wireless SSID
 wifi_plain_password="" # Your Wireless Password
 
