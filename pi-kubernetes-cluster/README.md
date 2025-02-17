@@ -1,3 +1,5 @@
+Full video tutorial and walkthrough of these scripts can be found in the Homelab Course in the [Travis Media Community](https://www.skool.com/travis-media-community).
+
 # Raspberry Pi Pre-setup
 When you install Ubuntu server on a Raspberry Pi, the eth0 network interface is DOWN. This script brings it up, assigns it an IP address, and then continues to set up a static IP via Netplan. This also includes prioritizing eth0 over wlan0 as well as setting a custom DNS server (in my case, my PiHole server).
 

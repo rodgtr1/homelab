@@ -1,0 +1,22 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: cloudflare-clusterissuer
+spec:
+  # You must replace this email address with your own.
+  # Let's Encrypt will use this to contact you about expiring
+  # certificates, and issues related to your account.
+  acme:
+    email: info@yourdomain.com
+    server: https://acme-v02.api.letsencrypt.org/directory
+    # server: https://acme-staging-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      # Secret resource that will be used to store the account's private key.
+      name: cloudflare-clusterissuer-account-key
+    solvers:
+    - dns01:
+        cloudflare:
+          email: info@yourdomain.com
+          apiTokenSecretRef:
+            name: cloudflare-api-key-secret
+            key: api-token
