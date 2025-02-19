@@ -3,7 +3,7 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: wildcard-cert
-  namespace: cert-manager
+  namespace: traefik # we will set this as the default certificate for Traefik to use, thus the namespace
 spec:
   secretName: wildcard-cert-tls
   duration: 2160h # 90d
