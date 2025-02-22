@@ -1,0 +1,1 @@
+Full video tutorial and walkthrough can be found in the Homelab Course in the [Travis Media Community](https://www.skool.com/travis-media-community).

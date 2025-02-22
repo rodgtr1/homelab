@@ -1,0 +1,17 @@
+logs:
+  general:
+    level: "DEBUG" # DEBUG if needed
+
+service:
+  type: LoadBalancer
+  loadBalancerIP: 192.168.1.2  # Choose an available IP from your MetalLB range
+
+additionalArguments:
+  - --entryPoints.web.http.redirections.entryPoint.to=websecure
+  - --entryPoints.web.http.redirections.entryPoint.scheme=https
+  - --entryPoints.web.http.redirections.entryPoint.permanent=true
+
+tlsStore:
+  default:
+    defaultCertificate:
+      secretName: wildcard-cert-tls

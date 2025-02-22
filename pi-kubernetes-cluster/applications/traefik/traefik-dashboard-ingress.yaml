@@ -1,0 +1,14 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: traefik-dashboard-ingress
+  namespace: traefik
+spec:
+  entryPoints:
+  - websecure
+  routes:
+  - match: Host(`traefik.travismedia.cloud`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`)) # change host to yours
+    kind: Rule
+    services:
+    - name: api@internal
+      kind: TraefikService
