@@ -1,6 +1,6 @@
 logs:
   general:
-    level: "DEBUG" # DEBUG if needed
+    level: "INFO" # DEBUG if needed
 
 service:
   type: LoadBalancer
