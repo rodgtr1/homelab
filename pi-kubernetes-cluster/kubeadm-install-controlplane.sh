@@ -1,7 +1,20 @@
 #!/bin/bash
 
+# Network plugin choice (set to "flannel" or "calico")
+NETWORK_PLUGIN="flannel"
+
 # Pod CIDR for Flannel
-POD_CIDR="10.244.0.0/16"
+FLANNEL_POD_CIDR="10.244.0.0/16"
+
+# Pod CIDR for Calico
+CALICO_POD_CIDR="10.244.0.0/16"
+
+# Set POD_CIDR based on network plugin choice
+if [ "$NETWORK_PLUGIN" = "flannel" ]; then
+    POD_CIDR="$FLANNEL_POD_CIDR"
+else
+    POD_CIDR="$CALICO_POD_CIDR"
+fi
 
 echo "Step 1: Disabling swap..."
 sudo swapoff -a
@@ -190,12 +203,49 @@ mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
-echo -e "\nStep 8: Deploying Flannel network..."
-kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
+echo -e "\nStep 8: Deploying network plugin..."
+if [ "$NETWORK_PLUGIN" = "flannel" ]; then
+    echo "Deploying Flannel network..."
+    kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
+    
+    if [ $? -ne 0 ]; then
+        echo "Error: Flannel deployment failed"
+        exit 1
+    fi
+else
+    echo "Deploying Calico network..."
+    # Install the operator and CRDs
+    kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.29.2/manifests/tigera-operator.yaml
+    
+    if [ $? -ne 0 ]; then
+        echo "Error: Calico operator deployment failed"
+        exit 1
+    fi
+    
+    # Create Calico installation manifest
+    cat <<EOF | kubectl apply -f -
+# This section includes base Calico installation configuration.
+# For more information, see: https://docs.tigera.io/calico/latest/reference/installation/api#operator.tigera.io/v1.Installation
+apiVersion: operator.tigera.io/v1
+kind: Installation
+metadata:
+  name: default
+spec:
+  # Configures Calico networking.
+  calicoNetwork:
+    ipPools:
+    - name: default-ipv4-ippool
+      blockSize: 26
+      cidr: $CALICO_POD_CIDR
+      encapsulation: VXLANCrossSubnet
+      natOutgoing: Enabled
+      nodeSelector: all()
+EOF
 
-if [ $? -ne 0 ]; then
-    echo "Error: Flannel deployment failed"
-    exit 1
+    if [ $? -ne 0 ]; then
+        echo "Error: Calico installation configuration failed"
+        exit 1
+    fi
 fi
 
 echo -e "\nControl plane initialization completed successfully!"
