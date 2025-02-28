@@ -7,8 +7,10 @@ spec:
   entryPoints:
   - websecure
   routes:
-  - match: Host(`traefik.travismedia.cloud`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`)) # change host to yours
+  - match: Host(`traefik.travismedia.cloud`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))
     kind: Rule
+    middlewares:
+    - name: add-trailing-slash
     services:
     - name: api@internal
       kind: TraefikService
