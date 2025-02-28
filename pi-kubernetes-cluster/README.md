@@ -14,7 +14,7 @@ Kubeadm is a tool for installing Kubernetes. It can be tedious to work through t
 
 ### Instructions for the controlplane server:
 1. Create the script file and paste in the kubeadm-install-controlplane.sh content. 
-2. If you are using another Pod networking solution, then set it's CIDR range in the POD_CIDR variable. I will be using Flannel. If that is what you will be choosing as well, then you can leave the POD_CIDR variable as is. 
+2. There is a Network plugin option variable at the top to set either Flannel or Calico as the pod networking solution. Flannel is basic, Calico will give you more features. Choose an option AND be sure to also update your Pod CIDR range for that option. 
 3. Make the script executable `sudo chmod +x kubeadm-install-controlplane.sh`
 4. Run the script on the controlplane server.
 5. Copy the kubeadm join command that is output at the end. You will need to run this on the worker nodes to join the cluster. 
