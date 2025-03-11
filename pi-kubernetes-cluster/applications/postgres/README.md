@@ -68,41 +68,14 @@ CREATE TABLE daily_steps (
 # Connect to the database with postgres user
 \c homelabdb postgres
 
--- Change table ownership to travis
+# Change table ownership to travis
 ALTER TABLE daily_steps OWNER TO travis;
 
--- Grant all privileges explicitly
+# Grant all privileges explicitly
 GRANT ALL PRIVILEGES ON TABLE daily_steps TO travis;
 GRANT ALL PRIVILEGES ON SCHEMA public TO travis;
 
--- Verify permissions
+#Verify permissions
 \z daily_steps
 ```
-
-####
-CREATE USER travis WITH PASSWORD 'your-password';
-GRANT ALL PRIVILEGES ON DATABASE homelabdb TO travis;
-GRANT ALL PRIVILEGES ON SCHEMA public TO travis;
-GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO travis;
-
-CREATE TABLE daily_steps (
-    id SERIAL PRIMARY KEY,
-    date DATE UNIQUE NOT NULL,
-    steps INTEGER NOT NULL,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-
--- Connect to the database
-\c homelabdb postgres
-
--- Change table ownership to travis
-ALTER TABLE daily_steps OWNER TO travis;
-
--- Grant all privileges explicitly
-GRANT ALL PRIVILEGES ON TABLE daily_steps TO travis;
-GRANT ALL PRIVILEGES ON SCHEMA public TO travis;
-
--- Verify permissions
-\z daily_steps
-
 
