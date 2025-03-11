@@ -1,0 +1,24 @@
+auth:
+  existingSecret: postgres-credentials
+  secretKeys:
+    adminPasswordKey: POSTGRES_PASSWORD
+    userPasswordKey: APP_DB_PASSWORD
+
+primary:
+  persistence:
+    storageClass: "local-storage"
+    size: 10Gi
+    accessModes:
+      - ReadWriteOnce
+    annotations: {}
+    
+service:
+  type: ClusterIP
+  ports:
+    postgresql: 5432
+
+# Backup and monitoring options
+backup:
+  enabled: true
+  cronjob:
+    schedule: "0 2 * * *"  # Daily backup at 2 AM
