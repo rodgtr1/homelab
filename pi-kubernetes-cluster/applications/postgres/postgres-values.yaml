@@ -22,3 +22,7 @@ backup:
   enabled: true
   cronjob:
     schedule: "0 2 * * *"  # Daily backup at 2 AM
+    storage:
+      enabled: true
+      storageClass: "local-storage"
+      size: 5Gi
