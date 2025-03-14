@@ -1,0 +1,14 @@
+cat grafana-values.yaml
+service:
+  enabled: true
+  port: 3000
+
+persistence:
+  type: pvc
+  enabled: true
+  name: grafana-pvc
+  storageClassName: local-storage
+  volumeName: grafana-pv
+  accessModes:
+    - ReadWriteOnce
+  size: 8Gi
