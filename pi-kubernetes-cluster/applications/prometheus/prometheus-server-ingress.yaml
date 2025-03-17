@@ -1,0 +1,14 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: prometheus-ingress
+  namespace: monitoring
+spec:
+  entryPoints:
+    - websecure
+  routes:
+  - match: Host(`prometheus.travismedia.cloud`)
+    kind: Rule
+    services:
+    - name: prometheus-server
+      port: 9090

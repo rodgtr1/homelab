@@ -1,0 +1,25 @@
+server:
+  service:
+    servicePort: 9090
+  persistentVolume:
+    enabled: true
+    storageClass: local-storage
+    volumeName: prometheus-server-pv
+    size: 8Gi
+  retention: 7d
+  resources:
+    limits:
+      memory: 1Gi
+      cpu: 1000m
+    requests:
+      memory: 512Mi
+      cpu: 500m
+
+alertmanager:
+  enabled: true
+  persistence:
+    enabled: true
+    size: 2Gi
+    volumeName: prometheus-alert-manager-pv
+    storageClass: local-storage
+
